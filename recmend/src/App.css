@@ -1,13 +1,50 @@
+html{
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+	overflow-x: hidden;
+	background-color: #1F2937;
+}
+
 *{
-  padding: 0;
-  margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	color: #F9FAFB;
+	font-family: -apple-system, BlinkMacSystemFont, 'Quicksand', 'Segoe UI', 'Roboto', 'Oxygen',
+	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+	sans-serif;
+	font-weight: 500;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+input:focus-within{
+	outline: none;
+	border-color: rgb(199, 210, 254, 1);
+	animation: none;
+}
+
+#loginBtn:hover > svg{
+	fill: #1F2937;
+}
+
+#backArrow:hover{
+	transition: all 0.1s ease-in-out;
+	color: rgb(199, 210, 254, 1);
+}
+
+@keyframes loading {
+	0%{
+		transform: rotate(0deg);
+	}
+
+	50%{
+		transform: rotate(180deg);
+	}
+
+	100%{
+		transform: rotate(360deg);
+	}
 }
