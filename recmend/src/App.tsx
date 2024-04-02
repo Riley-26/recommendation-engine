@@ -142,6 +142,7 @@ const App = () => {
                     alert("Already saved.")
                 }
             } catch (error){
+                console.log(error)
                 return error
             }
         })
@@ -227,9 +228,7 @@ const App = () => {
         }
     }, [])
 
-    useEffect(() => {
-        
-    }, [token])
+    useEffect(() => {}, [token])
     
     return (
         <div className="App">

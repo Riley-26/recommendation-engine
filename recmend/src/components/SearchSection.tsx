@@ -43,6 +43,20 @@ const SearchSection:FC<SearchProps> = ({genre}) => {
         }
     }
 
+    const authMovies = async () => {
+        try{
+            const {data} = await axios.get(`https://api.themoviedb.org/3/authentication`, {
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2M4OGNhZjAwNjQ3NjI2YTMwMmQ4YjJlNjA2NDEzYiIsInN1YiI6IjY2MGM4YmU3MzNhMzc2MDE3ZDgxMzI0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OrB-1q5cIi57YByXS-u3savP3yUE2EcL5v8CKFrXOHQ`
+                }
+            })
+            return data
+
+        } catch{
+            console.log("Error")
+        }
+    }
+
     const getSearch = async function(){
         const input:string = (document.getElementById("searchInput") as HTMLInputElement).value
         loggedContext.updateIncorrect(false)
@@ -53,10 +67,22 @@ const SearchSection:FC<SearchProps> = ({genre}) => {
         }
         
         const movieData = async () => {
-            const movieFetch = await fetch(`https://www.omdbapi.com/?s=${ input }&apikey=7ceed11f`)
-            const movieInfo = await movieFetch.json()
+            try{
+                const {data} = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${ input }&include_adult=false`, {
+                    headers: {
+                        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2M4OGNhZjAwNjQ3NjI2YTMwMmQ4YjJlNjA2NDEzYiIsInN1YiI6IjY2MGM4YmU3MzNhMzc2MDE3ZDgxMzI0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OrB-1q5cIi57YByXS-u3savP3yUE2EcL5v8CKFrXOHQ`
+                    }
+                });
+                console.log(data)
 
-            loggedContext.updateSearch(movieInfo)
+                if (data.total_results > 0){
+                    loggedContext.updateSearch(data)
+                } else{
+                    loggedContext.updateSearch("undefined")
+                }
+            } catch {
+                loggedContext.updateSearch("undefined")
+            }
         }
 
         const musicData = async () => {
@@ -90,7 +116,7 @@ const SearchSection:FC<SearchProps> = ({genre}) => {
         if (genre === "MOVIE"){
             loggedContext.updateLoading(true)
             setTimeout(() => {
-                movieData().then(() => {
+                authMovies().then(() => movieData()).then(() => {
                     loggedContext.updateLoading(false)
                 })
             }, 2000)

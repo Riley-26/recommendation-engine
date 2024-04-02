@@ -43,10 +43,10 @@ const ContentPage:FC = () => {
 					}
 				} else if (stateData[0] === "MOVIE"){
 					try {
-						setDisplayImg(data.Search[0]["Poster"])
-						setCurrentData(data.Search[0])
+						setDisplayImg(`https://image.tmdb.org/t/p/original${ data.results[0].poster_path }`)
+						setCurrentData(data.results[0])
 					} catch {
-						setDisplayImg(data["Poster"])
+						setDisplayImg(`https://image.tmdb.org/t/p/original${ data.poster_path }`)
 						setCurrentData(data)
 					}
 				} else if (stateData[0] === "GAME"){
@@ -65,10 +65,17 @@ const ContentPage:FC = () => {
 	}
 
 	const newMovieData = async () => {
-        const detailedSearch = await fetch(`https://www.omdbapi.com/?i=${ id }&apikey=7ceed11f`)
-        const searchResult = await detailedSearch.json()
+        try{
+			const {data} = await axios.get(`https://api.themoviedb.org/3/movie/${ id }`, {
+				headers: {
+					Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2M4OGNhZjAwNjQ3NjI2YTMwMmQ4YjJlNjA2NDEzYiIsInN1YiI6IjY2MGM4YmU3MzNhMzc2MDE3ZDgxMzI0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OrB-1q5cIi57YByXS-u3savP3yUE2EcL5v8CKFrXOHQ`
+				}
+			});
 
-        return searchResult
+			return data
+		} catch (error){
+			console.log(error)
+		}
     }
 
 	const newSongData = async () => {
@@ -109,7 +116,16 @@ const ContentPage:FC = () => {
 						Authorization: `Bearer ${spotifyToken}`
 					},
 				})
-				return artistData
+
+				const genreSeed = String(artistData.data.genres.slice(0, 4)).replace(" ", "%20")
+
+				const recommendData = await axios.get(`https://api.spotify.com/v1/recommendations?seed_genres=${ genreSeed }&seed_tracks=${ id }&limit=12`, {
+					headers: {
+						Authorization: `Bearer ${spotifyToken}`
+					}
+				})
+
+				return recommendData
 			})
 
 			return searchData
@@ -133,19 +149,20 @@ const ContentPage:FC = () => {
 	useEffect(() => {
 		if (dataSet){
 			if (id && currentGenre === "MOVIE"){
+				const movieGenreArray:number[] = []
 				newMovieData().then((data:any) => {
-					const movieGenreObj:any = {};
-					movieGenreObj[name] = data.Genre.split(" ")
-					setMovieDetails(movieGenreObj)
+					for (let i=0; i<data.genres.length; i++){
+						movieGenreArray.push(data.genres[i].name)
+					}
+					setMovieDetails(movieGenreArray)
 					setFetched(true)
 				}).then(() => {
 					setFetched(false)
 				})
 			} else if (currentGenre === "SONG"){
 				newSongData().then((data:any) => {
-					const songGenreObj:any = {};
-					songGenreObj[name] = data.data.genres
-					setSongDetails(songGenreObj)
+					console.log(data.data.tracks)
+					setSongDetails(data.data.tracks)
 					setFetched(true)
 				}).then(() => {
 					setFetched(false)
@@ -173,38 +190,43 @@ const ContentPage:FC = () => {
 
 	useEffect(() => {}, [fetched])
 
-	useEffect(() => {
-		if (movieDetails){
-			console.log(movieDetails)
-		}
-	}, [movieDetails])
+	useEffect(() => {}, [movieDetails])
 
-	useEffect(() => {
-		if (songDetails){
-			console.log(songDetails)
-		}
-	}, [songDetails])
+	useEffect(() => {}, [songDetails])
 
-	useEffect(() => {
-		if (gameDetails){
-			console.log(gameDetails)
-		}
-	}, [gameDetails])
+	useEffect(() => {}, [gameDetails])
 
 	return (
 		<>
 			{
 				stateData ? <>
 					<section className='mx-auto min-h-screen max-w-4xl flex flex-col items-center justify-center'>
-						<img className='cursor-pointer' src="/" alt="RECMEND" onClick={() => navigate("/")}/>
+						<img className='cursor-pointer my-12' src="/" alt="RECMEND" onClick={() => navigate("/")}/>
 						<LoginButton/>
 						<div className='max-w-8xl my-24 mx-auto flex items-center justify-center flex-col'>
 							<img src={displayImg} alt="imgURL" className='rounded-lg my-8'/>
 							<h1 className='text-4xl'>{`${genre[0]}${genre.substring(1).toLowerCase()}s which are similar to `}<span className="text-indigo-200 font-medium transition-all">{currentName}:</span></h1>
 						</div>
 					</section>
-					<section className='mx-auto min-h-screen max-w-4xl flex flex-col items-center justify-center'>
-
+					<section className='mx-auto min-h-screen max-w-5xl flex flex-wrap items-center justify-evenly'>
+						{
+							songDetails ? <>
+								{
+									songDetails.map((item:any, index:any) => {
+										let songName = item.name;
+										if (item.name.length > 60){
+											songName += "..."
+										}
+										return <div className='flex flex-col items-center max-w-1/2 m-8 w-60 h-80 justify-end'>
+											<h1 className='text-lg text-center'>{songName}</h1>
+											<img src={item.album.images[1].url} className='w-60' />
+										</div>
+									})
+								}
+							</> : <>
+								<h1>No songs found</h1>
+							</>
+						}
 					</section>
 				</> : <>
 					<section className='mx-auto min-h-screen max-w-4xl flex flex-col items-center justify-center'>

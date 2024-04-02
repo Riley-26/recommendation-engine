@@ -37,7 +37,7 @@ const SearchDisplay:FC<DisplayProps> = ({display_imgURL, display_name, display_a
         
         if (loggedContext.loggedIn){
             const userId = loggedContext.userData.userId;
-            loggedContext.saveObjToDB(userId, [dataName, dataImage, dataArtist], genre, dataId)
+            loggedContext.saveObjToDB(userId, [dataName, dataImage, dataArtist], genre, String(dataId))
         } else {
             const userId = "undefined";
             alert("Please log in to use this feature.")
@@ -55,7 +55,7 @@ const SearchDisplay:FC<DisplayProps> = ({display_imgURL, display_name, display_a
             <h1 className="text-6xl leading-relaxed">Is this the correct <span id="textAnim" className="text-indigo-200 font-medium transition-all">{genre}</span>?</h1>
             <div className='flex items-center justify-center my-16'>
                 <div className='mx-8 w-2/4 max-w-xl relative transition-all' onMouseOver={() => imgHover()} onMouseOut={() => imgHover()}>
-                    <img id="displayImg" src={display_imgURL} alt="songURL" className='rounded-lg transition-all'/>
+                    <img id="displayImg" src={display_imgURL} alt="displayImg" className='rounded-lg transition-all'/>
                     <Favorite id="favBtn" className="absolute top-5 left-5 hidden transition-all opacity-0 cursor-pointer" style={{fontSize: "48px"}} onClick={() => saveItem()}/>
                 </div>
                 <div className='mx-8 w-2/4 max-w-3xl'>

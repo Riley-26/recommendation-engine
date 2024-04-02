@@ -24,17 +24,18 @@ const Movies:FC = () => {
 			imgURL: url,
 			movieId: uniqueId
 		})
-		setTransferMovieData(loggedContext.search.Search[id])
+		setTransferMovieData(loggedContext.search.results[id].title)
 	}
 	
 	useEffect(() => {
-		if (loggedContext.search){
-			setTransferMovieData(loggedContext.search.Search[0])
+		if (loggedContext.search && loggedContext.search !== "undefined"){
+			console.log(loggedContext.search.results[0])
+			setTransferMovieData(loggedContext.search.results[0])
 			setPropsObj({
-				movieName: loggedContext.search.Search[0]["Title"],
+				movieName: loggedContext.search.results[0].title,
 				directorName: "",
-				imgURL: loggedContext.search.Search[0]["Poster"],
-				movieId: loggedContext.search.Search[0]["imdbID"]
+				imgURL: `https://image.tmdb.org/t/p/original${ loggedContext.search.results[0].poster_path }`,
+				movieId: loggedContext.search.results[0].id
 			})
 		}
 	}, [loggedContext.search])
@@ -75,12 +76,12 @@ const Movies:FC = () => {
 					<h1 className='my-12 text-5xl text-center'>Please pick the correct one, or narrow down the search</h1>
 					<div className='min-h-screen mx-auto bg-gray-800 flex items-center justify-between flex-wrap max-w-5xl py-12'>
 						{
-							loggedContext.search.Search.map((item:any, index:any) => {
+							loggedContext.search.results.map((item:any, index:any) => {
 								return (
-									<div id={index} key={index} className='mx-12 my-8 flex items-center cursor-pointer w-2/5 rounded-lg hover:bg-gray-600 transition-all p-4' onClick={() => {newSearch(item["Poster"], item["Title"], "", index, item["imdbID"]); window.location.href = `#${genre.toLowerCase()}`}}>
-										<img className='w-32 rounded-lg' src={item["Poster"]} alt="" />
+									<div id={index} key={index} className='mx-12 my-8 flex items-center cursor-pointer w-2/5 rounded-lg hover:bg-gray-600 transition-all p-4' onClick={() => {newSearch(`https://image.tmdb.org/t/p/original${ item.poster_path }`, item.title, "", index, item.id); window.location.href = `#${genre.toLowerCase()}`}}>
+										<img className='w-32 rounded-lg' src={`https://image.tmdb.org/t/p/original${ item.poster_path }`} alt="" />
 										<div>
-											<h1 className='mx-4 my-2 text-2xl'>{item["Title"]}</h1>
+											<h1 className='mx-4 my-2 text-2xl'>{item.title}</h1>
 										</div>
 									</div>
 								)
