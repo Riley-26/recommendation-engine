@@ -138,6 +138,10 @@ const ContentPage:FC = () => {
 		const gameFetch = await fetch(`https://api.rawg.io/api/games?key=cf44002358b0402eb16af2dbdf380343&search=${ name }&search_precise=True`)
 		const gameInfo = await gameFetch.json()
 
+		const gameGenres = gameInfo.results[0].genres
+
+		//const recommendGames = await axios.get(`https://api.rawg.io/api/games?key=cf44002358b0402eb16af2dbdf380343&genres=${"fighting"}&page_size=100&page=6`)
+
 		return gameInfo
 	}
 
@@ -161,7 +165,10 @@ const ContentPage:FC = () => {
 				})
 			} else if (currentGenre === "SONG"){
 				newSongData().then((data:any) => {
+<<<<<<< HEAD
 					console.log(data.data.tracks)
+=======
+>>>>>>> 5d4dcb9eb141f3c6455c4fe5c89ee9e8746b8c5d
 					setSongDetails(data.data.tracks)
 					setFetched(true)
 				}).then(() => {
@@ -170,7 +177,6 @@ const ContentPage:FC = () => {
 			} else if (currentGenre === "GAME"){
 				const gameGenreArray:number[] = [];
 				newGameData().then((data:any) => {
-					console.log(data)
 					for (let i=0; i<data.results[0].genres.length; i++){
 						gameGenreArray.push(data.results[0].genres[i].name)
 					}
@@ -218,7 +224,11 @@ const ContentPage:FC = () => {
 											songName += "..."
 										}
 										return <div className='flex flex-col items-center max-w-1/2 m-8 w-60 h-80 justify-end'>
+<<<<<<< HEAD
 											<h1 className='text-lg text-center'>{songName}</h1>
+=======
+											<h1 className='text-lg'>{songName}</h1>
+>>>>>>> 5d4dcb9eb141f3c6455c4fe5c89ee9e8746b8c5d
 											<img src={item.album.images[1].url} className='w-60' />
 										</div>
 									})
