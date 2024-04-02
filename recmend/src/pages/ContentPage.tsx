@@ -109,7 +109,16 @@ const ContentPage:FC = () => {
 						Authorization: `Bearer ${spotifyToken}`
 					},
 				})
-				return artistData
+
+				const genreSeed = String(artistData.data.genres.slice(0, 4)).replace(" ", "%20")
+
+				const recommendData = await axios.get(`https://api.spotify.com/v1/recommendations?seed_genres=${ genreSeed }&seed_tracks=${ id }&limit=12`, {
+					headers: {
+						Authorization: `Bearer ${spotifyToken}`
+					}
+				})
+
+				return recommendData
 			})
 
 			return searchData
@@ -143,9 +152,8 @@ const ContentPage:FC = () => {
 				})
 			} else if (currentGenre === "SONG"){
 				newSongData().then((data:any) => {
-					const songGenreObj:any = {};
-					songGenreObj[name] = data.data.genres
-					setSongDetails(songGenreObj)
+					console.log(data.data.tracks)
+					setSongDetails(data.data.tracks)
 					setFetched(true)
 				}).then(() => {
 					setFetched(false)
@@ -203,8 +211,25 @@ const ContentPage:FC = () => {
 							<h1 className='text-4xl'>{`${genre[0]}${genre.substring(1).toLowerCase()}s which are similar to `}<span className="text-indigo-200 font-medium transition-all">{currentName}:</span></h1>
 						</div>
 					</section>
-					<section className='mx-auto min-h-screen max-w-4xl flex flex-col items-center justify-center'>
-
+					<section className='mx-auto min-h-screen max-w-5xl flex flex-wrap items-center justify-evenly'>
+						{
+							songDetails ? <>
+								{
+									songDetails.map((item:any, index:any) => {
+										let songName = item.name;
+										if (item.name.length > 60){
+											songName += "..."
+										}
+										return <div className='flex flex-col items-center max-w-1/2 m-8 w-60 h-80 justify-end'>
+											<h1 className='text-lg'>{songName}</h1>
+											<img src={item.album.images[1].url} className='w-60' />
+										</div>
+									})
+								}
+							</> : <>
+								<h1>No songs found</h1>
+							</>
+						}
 					</section>
 				</> : <>
 					<section className='mx-auto min-h-screen max-w-4xl flex flex-col items-center justify-center'>
