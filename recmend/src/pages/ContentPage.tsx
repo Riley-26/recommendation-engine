@@ -131,6 +131,10 @@ const ContentPage:FC = () => {
 		const gameFetch = await fetch(`https://api.rawg.io/api/games?key=cf44002358b0402eb16af2dbdf380343&search=${ name }&search_precise=True`)
 		const gameInfo = await gameFetch.json()
 
+		const gameGenres = gameInfo.results[0].genres
+
+		//const recommendGames = await axios.get(`https://api.rawg.io/api/games?key=cf44002358b0402eb16af2dbdf380343&genres=${"fighting"}&page_size=100&page=6`)
+
 		return gameInfo
 	}
 
@@ -152,7 +156,6 @@ const ContentPage:FC = () => {
 				})
 			} else if (currentGenre === "SONG"){
 				newSongData().then((data:any) => {
-					console.log(data.data.tracks)
 					setSongDetails(data.data.tracks)
 					setFetched(true)
 				}).then(() => {
@@ -161,7 +164,6 @@ const ContentPage:FC = () => {
 			} else if (currentGenre === "GAME"){
 				const gameGenreArray:number[] = [];
 				newGameData().then((data:any) => {
-					console.log(data)
 					for (let i=0; i<data.results[0].genres.length; i++){
 						gameGenreArray.push(data.results[0].genres[i].name)
 					}
@@ -181,23 +183,11 @@ const ContentPage:FC = () => {
 
 	useEffect(() => {}, [fetched])
 
-	useEffect(() => {
-		if (movieDetails){
-			console.log(movieDetails)
-		}
-	}, [movieDetails])
+	useEffect(() => {}, [movieDetails])
 
-	useEffect(() => {
-		if (songDetails){
-			console.log(songDetails)
-		}
-	}, [songDetails])
+	useEffect(() => {}, [songDetails])
 
-	useEffect(() => {
-		if (gameDetails){
-			console.log(gameDetails)
-		}
-	}, [gameDetails])
+	useEffect(() => {}, [gameDetails])
 
 	return (
 		<>
