@@ -165,10 +165,7 @@ const ContentPage:FC = () => {
 				})
 			} else if (currentGenre === "SONG"){
 				newSongData().then((data:any) => {
-<<<<<<< HEAD
 					console.log(data.data.tracks)
-=======
->>>>>>> 5d4dcb9eb141f3c6455c4fe5c89ee9e8746b8c5d
 					setSongDetails(data.data.tracks)
 					setFetched(true)
 				}).then(() => {
@@ -224,12 +221,7 @@ const ContentPage:FC = () => {
 											songName += "..."
 										}
 										return <div className='flex flex-col items-center max-w-1/2 m-8 w-60 h-80 justify-end'>
-<<<<<<< HEAD
 											<h1 className='text-lg text-center'>{songName}</h1>
-=======
-											<h1 className='text-lg'>{songName}</h1>
->>>>>>> 5d4dcb9eb141f3c6455c4fe5c89ee9e8746b8c5d
-											<img src={item.album.images[1].url} className='w-60' />
 										</div>
 									})
 								}
