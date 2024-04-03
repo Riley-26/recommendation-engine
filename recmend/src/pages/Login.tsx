@@ -43,6 +43,7 @@ const Login:FC = () => {
 			loggedContext.updateState(true);
 			window.location.href = "/"
 		} catch (error:any) {
+			console.log(error)
 			let errorMessage:string = `${error}`;
 			errorMessage = errorMessage.split(":")[0];
 			if (errorMessage in errorMessages){

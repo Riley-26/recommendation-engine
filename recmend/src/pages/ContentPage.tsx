@@ -66,13 +66,22 @@ const ContentPage:FC = () => {
 
 	const newMovieData = async () => {
         try{
-			const {data} = await axios.get(`https://api.themoviedb.org/3/movie/${ id }`, {
+			const movieFetch = await axios.get(`https://api.themoviedb.org/3/movie/${ id }`, {
 				headers: {
 					Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2M4OGNhZjAwNjQ3NjI2YTMwMmQ4YjJlNjA2NDEzYiIsInN1YiI6IjY2MGM4YmU3MzNhMzc2MDE3ZDgxMzI0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OrB-1q5cIi57YByXS-u3savP3yUE2EcL5v8CKFrXOHQ`
 				}
-			});
 
-			return data
+			}).then(async (data) => {
+				const movieRecommendations = await axios.get(`https://api.themoviedb.org/3/movie/${ id }/recommendations`, {
+					headers: {
+						Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2M4OGNhZjAwNjQ3NjI2YTMwMmQ4YjJlNjA2NDEzYiIsInN1YiI6IjY2MGM4YmU3MzNhMzc2MDE3ZDgxMzI0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OrB-1q5cIi57YByXS-u3savP3yUE2EcL5v8CKFrXOHQ`
+					}
+				})
+				return movieRecommendations
+			})
+
+			return movieFetch
+
 		} catch (error){
 			console.log(error)
 		}
@@ -155,17 +164,14 @@ const ContentPage:FC = () => {
 			if (id && currentGenre === "MOVIE"){
 				const movieGenreArray:number[] = []
 				newMovieData().then((data:any) => {
-					for (let i=0; i<data.genres.length; i++){
-						movieGenreArray.push(data.genres[i].name)
-					}
-					setMovieDetails(movieGenreArray)
+					console.log(data)
+					setMovieDetails(data)
 					setFetched(true)
 				}).then(() => {
 					setFetched(false)
 				})
 			} else if (currentGenre === "SONG"){
 				newSongData().then((data:any) => {
-					console.log(data.data.tracks)
 					setSongDetails(data.data.tracks)
 					setFetched(true)
 				}).then(() => {
@@ -213,20 +219,48 @@ const ContentPage:FC = () => {
 					</section>
 					<section className='mx-auto min-h-screen max-w-5xl flex flex-wrap items-center justify-evenly'>
 						{
-							songDetails ? <>
+							currentGenre === "MOVIE" ? 
+								movieDetails ? <>
+									{
+										movieDetails.data.results.map((item:any, index:any) => {
+											console.log(item)
+											let movieName = item.title;
+											if (item.title.length > 60){
+												movieName += "..."
+											}
+											return <div className='flex flex-col items-center max-w-1/2 mx-8 my-14 w-60 h-80 justify-end'>
+												<h1 className='text-lg text-center'>{movieName}</h1>
+												<img className='flex flex-col' src={`https://image.tmdb.org/t/p/original${ item.poster_path }`} alt="movieImg" />
+											</div>
+										})
+									}
+								</> : <>
+									<h1>No movies found</h1>
+								</>
+							: <>
 								{
-									songDetails.map((item:any, index:any) => {
-										let songName = item.name;
-										if (item.name.length > 60){
-											songName += "..."
-										}
-										return <div className='flex flex-col items-center max-w-1/2 m-8 w-60 h-80 justify-end'>
-											<h1 className='text-lg text-center'>{songName}</h1>
-										</div>
-									})
+									currentGenre === "SONG" ?
+										songDetails ? <>
+											{
+												songDetails.map((item:any, index:any) => {
+													console.log(item)
+													let songName = item.name;
+													if (item.name.length > 60){
+														songName += "..."
+													}
+													return <div className='flex flex-col items-center max-w-1/2 mx-8 my-14 w-60 h-80 justify-end'>
+														<h1 className='text-lg text-center'>{songName}</h1>
+														<img className='flex flex-col' src={item.album.images[0].url} alt="movieImg" />
+													</div>
+												})
+											}
+										</> : <>
+											<h1>No songs found</h1>
+										</>
+									: <>
+										
+									</>
 								}
-							</> : <>
-								<h1>No songs found</h1>
 							</>
 						}
 					</section>

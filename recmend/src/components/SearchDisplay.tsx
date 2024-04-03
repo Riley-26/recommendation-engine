@@ -26,7 +26,7 @@ const SearchDisplay:FC<DisplayProps> = ({display_imgURL, display_name, display_a
         
         favBtn.classList.toggle("hidden");
         favBtn.classList.toggle("opacity-100");
-        displayImg.classList.toggle("brightness-50")
+        displayImg.classList.toggle("brightness-50");
     }
     
     const saveItem = () => {
