@@ -29,7 +29,7 @@ const Navbar:FC = () => {
 	return (
 		<nav className='px-4 relative'>
 			<ul className='flex uppercase items-center justify-around max-w-7xl mx-auto text-xl py-6'>
-				<img className='cursor-pointer' src="/" alt="RECMEND" onClick={() => navigate("/")}/>
+				<li id='navLogo' className='cursor-pointer' onClick={() => navigate("/")}>REC<span className="text-indigo-200">MEND</span></li>
 				<li className='hover:text-indigo-200 transition-all hidden sm:flex'><a href="/movies">Movies</a></li>
 				<li className='hover:text-indigo-200 transition-all hidden sm:flex'><a href="/music">Music</a></li>
 				<li className='hover:text-indigo-200 transition-all hidden sm:flex'><a href="/games">Video Games</a></li>

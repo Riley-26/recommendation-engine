@@ -14,10 +14,10 @@ const Home:FC = () => {
             <LoginButton />
             <section className="min-h-screen max-w-8xl mx-auto text-center bg-gray-800 flex items-center justify-center flex-col">
                 <div className="">
-                    <img />
+                    <span id="homeLogo">REC<span className="text-indigo-200">MEND</span></span>
                 </div>
                 <div className="max-w-6xl mx-4 font-normal p-8 border-2 border-indigo-200 rounded-lg my-10">
-                    <h1 className="leading-relaxed text-3xl lg:text-5xl sm:text-4xl lg:leading-relaxed md:leading-relaxed sm:leading-relaxed">The BEST Entertainment Recommendation Engine on the Internet</h1>
+                    <h1 className="leading-relaxed text-3xl lg:text-5xl sm:text-4xl lg:leading-relaxed md:leading-relaxed sm:leading-relaxed">The <span className="text-indigo-200">BEST</span> Entertainment Recommendation Engine on the Internet</h1>
                 </div>
                 <button className="my-8 px-6 py-4 bg-indigo-200 border-2 border-indigo-200 rounded-lg text-gray-800 font-bold text-xl transition-all hover:bg-gray-800 hover:text-gray-50" onClick={() => {window.location.href = "#genre"}}>
                     GET STARTED

@@ -149,7 +149,7 @@ const ContentPage:FC = () => {
 	const newGameData = async () => {
 		try{
 			loggedContext.updateLoading(true)
-			const gameFetch = await axios.get(`http://localhost:5000/api/data?query=${ name }&type=search`).then((data:any) => {
+			const gameFetch = await axios.get(`http://192.168.1.73:5000/api/data?query=${ name }&type=search`).then((data:any) => {
 				return data
 			})
 
@@ -260,7 +260,6 @@ const ContentPage:FC = () => {
 											if (item.title.length > 60){
 												movieName += "..."
 											}
-											console.log(item)
 											return <div className='flex flex-col items-center max-w-1/2 mx-8 my-14 w-60 h-80 justify-end'>
 												<h1 className='text-lg text-center my-2'>{movieName}</h1>
 												<div className='relative' onMouseOver={() => imgHover(index)} onMouseOut={() => imgHover(index)}>
@@ -276,7 +275,7 @@ const ContentPage:FC = () => {
 											<Settings style={{fontSize: "64px", animation: "loading 2s infinite"}}/>
 											<h1 className='text-4xl my-4 text-center'>Fetching similar movies...</h1>
 										</div>
-										: <h1>No movies found. Please try again or search for a different movie.</h1>
+										: <h1 className='text-center'>No movies found. Please try again or search for a different movie.</h1>
 									}
 								</>
 							: <>
@@ -304,7 +303,7 @@ const ContentPage:FC = () => {
 													<Settings style={{fontSize: "64px", animation: "loading 2s infinite"}}/>
 													<h1 className='text-4xl my-4 text-center'>Fetching similar songs...</h1>
 												</div>
-												: <h1>No songs found. Please try again or search for a different song.</h1>
+												: <h1 className='text-center'>No songs found. Please try again or search for a different song.</h1>
 											}
 										</>
 									: <>
@@ -313,17 +312,21 @@ const ContentPage:FC = () => {
 												gameDetails ? <>
 													{
 														gameDetails.map((item:any, index:any) => {
-															let gameName = item.name
-															if (item.name.length > 60){
-																gameName += "..."
-															}
-															return <div className='flex flex-col items-center max-w-1/2 mx-8 my-14 w-60 h-80 justify-end'>
-																<h1 className='text-lg text-center my-2'>{gameName}</h1>
-																<div className='relative' onMouseOver={() => imgHover(index)} onMouseOut={() => imgHover(index)}>
-																	<img className='displayImg flex flex-col rounded-lg transition-all' src={item.background_image} alt="gameImg" />
-																	<Favorite className="favBtn absolute top-5 left-5 hidden transition-all opacity-0 cursor-pointer" style={{fontSize: "48px"}} onClick={() => saveItem(item.name, item.background_image, item.id)}/>
+															if (item !== undefined){
+																let gameName = item.name
+																if (item.name.length > 60){
+																	gameName += "..."
+																}
+																return <div className='flex flex-col items-center max-w-1/2 mx-8 my-14 w-60 h-80 justify-end'>
+																	<h1 className='text-lg text-center my-2'>{gameName}</h1>
+																	<div className='relative' onMouseOver={() => imgHover(index)} onMouseOut={() => imgHover(index)}>
+																		<img className='displayImg flex flex-col rounded-lg transition-all' src={item.background_image} alt="gameImg" />
+																		<Favorite className="favBtn absolute top-5 left-5 hidden transition-all opacity-0 cursor-pointer" style={{fontSize: "48px"}} onClick={() => saveItem(item.name, item.background_image, item.id)}/>
+																	</div>
 																</div>
-															</div>
+															} else{
+																return ""
+															}
 														})
 													}
 												</> : <>
@@ -332,10 +335,10 @@ const ContentPage:FC = () => {
 															<Settings style={{fontSize: "64px", animation: "loading 2s infinite"}}/>
 															<h1 className='text-4xl my-4 text-center'>Fetching similar games...</h1>
 														</div>
-														: <h1>No games found. Please try again or search for a different game.</h1>
+														: <h1 className='text-center'>No games found. Please try again or search for a different game.</h1>
 													}
 												</> : <>
-													<h1>None found. Please try again.</h1>
+													<h1 className='text-center'>None found. Please try again.</h1>
 												</>
 										}
 									</>

@@ -6,7 +6,7 @@ const PORT = 5000;
 
 app.use(express())
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "http://192.168.1.73:3000",
     methods: "GET, POST",
     allowedHeaders: "Content-Type, Authorization"
 }))

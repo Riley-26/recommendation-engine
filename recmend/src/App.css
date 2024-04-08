@@ -25,6 +25,22 @@ input:focus-within{
 	animation: none;
 }
 
+#navLogo{
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	font-size: 32px;
+}
+
+#homeLogo{
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	font-size: 88px;
+}
+
+@media (max-width: 600px){
+	#homeLogo{
+		font-size: 64px;
+	}
+}
+
 #loginBtn:hover > svg{
 	fill: #1F2937;
 }
