@@ -27,7 +27,7 @@ const Login:FC = () => {
 			login({username: userUsername, password: userPassword})
 		} else if (value === "signup") {
 			if (!userEmail){
-				alert("Please provide an email")
+				alert("Please provide an email if signing up.")
 				window.location.reload()
 			} else{
 				handleSignUp({username: userUsername, email: userEmail, password: userPassword})
@@ -108,24 +108,24 @@ const Login:FC = () => {
 	return (
 		<div className='flex flex-col items-center justify-center max-w-6xl mx-auto min-h-screen'>
 			<img className='cursor-pointer' src="/" alt="RECMEND" onClick={() => navigate("/")}/>
-			<form id="form" className='flex flex-col w-4/5 border-2 border-indigo-200 rounded-lg my-6 p-20'>
+			<form id="form" className='flex flex-col w-4/5 border-2 border-indigo-200 rounded-lg my-6 p-4 sm:p-20'>
 				<div className='flex flex-col my-6'>
 					<label className='text-lg my-2'>Username*</label>
-					<input required className="text-lg border-2 border-indigo-200 border-opacity-60 rounded-lg bg-gray-800 p-2 transition-all focus-within:border-opacity-100"/>
+					<input required className="text-md sm:text-lg border-2 border-indigo-200 border-opacity-60 rounded-lg bg-gray-800 p-2 transition-all focus-within:border-opacity-100"/>
 				</div>
 				<div className='flex flex-col my-6'>
 					<label className='text-lg my-2'>Email</label>
-					<input  className="text-lg border-2 border-indigo-200 border-opacity-60 rounded-lg bg-gray-800 p-2 transition-all focus-within:border-opacity-100" type='email'/>
+					<input  className="text-md sm:text-lg border-2 border-indigo-200 border-opacity-60 rounded-lg bg-gray-800 p-2 transition-all focus-within:border-opacity-100" type='email'/>
 				</div>
 				<div className='flex flex-col my-6'>
 					<label className='text-lg my-2'>Password*</label>
-					<input required className="text-lg border-2 border-indigo-200 border-opacity-60 rounded-lg bg-gray-800 p-2 transition-all focus-within:border-opacity-100" type='password'/>
+					<input required className="text-md sm:text-lg border-2 border-indigo-200 border-opacity-60 rounded-lg bg-gray-800 p-2 transition-all focus-within:border-opacity-100" type='password'/>
 				</div>
-				<div className='flex justify-center'>
-					<button type='submit' onClick={() => {buttonClicked("login"); return(false)}} className="mx-4 w-1/4 my-4 px-6 py-4 bg-indigo-200 border-2 border-indigo-200 rounded-lg text-gray-800 font-bold text-xl transition-all hover:bg-gray-800 hover:text-gray-50">
+				<div className='flex flex-col justify-center md:flex-row'>
+					<button type='submit' onClick={() => {buttonClicked("login"); return(false)}} className="mx-auto w-2/4 md:w-1/4 lg:px-6 my-4 px-4 py-4 bg-indigo-200 border-2 border-indigo-200 rounded-lg text-gray-800 font-bold text-xl transition-all hover:bg-gray-800 hover:text-gray-50">
 						Log In
 					</button>
-					<button type='submit' onClick={() => {buttonClicked("signup"); return(false)}} className="mx-4 w-1/4 my-4 px-6 py-4 bg-indigo-200 border-2 border-indigo-200 rounded-lg text-gray-800 font-bold text-xl transition-all hover:bg-gray-800 hover:text-gray-50">
+					<button type='submit' onClick={() => {buttonClicked("signup"); return(false)}} className="mx-auto w-2/4 md:w-1/4 lg:px-6 my-4 px-4 py-4 bg-indigo-200 border-2 border-indigo-200 rounded-lg text-gray-800 font-bold text-xl transition-all hover:bg-gray-800 hover:text-gray-50">
 						Sign Up
 					</button>
 				</div>

@@ -240,14 +240,14 @@ const ContentPage:FC = () => {
 			{
 				stateData ? <>
 					<section className='mx-auto min-h-screen max-w-4xl flex flex-col items-center justify-center'>
-						<div className='flex justify-between items-center w-2/4'>
+						<div className='flex justify-between items-center w-3/4 sm:w-2/4'>
 							<span className='cursor-pointer text-xl' id='backArrow' onClick={() => {window.history.back()}}><ArrowBackIos id="backArrow" style={{fontSize: "32px", cursor: "pointer"}}/>Back</span>
 							<img className='cursor-pointer my-8' src="/" alt="RECMEND" onClick={() => navigate("/")}/>
 						</div>
 						<LoginButton/>
 						<div className='max-w-8xl my-8 mx-auto flex items-center justify-center flex-col'>
 							<img src={displayImg} alt="imgURL" className='rounded-lg my-8' style={{maxHeight: "40rem"}}/>
-							<h1 className='text-4xl text-center'>{`${genre[0]}${genre.substring(1).toLowerCase()}s which are similar to `}<span className="text-indigo-200 font-medium transition-all">{currentName}:</span></h1>
+							<h1 className='leading-relaxed mx-4 text-3xl lg:text-5xl sm:text-4xl lg:leading-relaxed md:leading-relaxed sm:leading-relaxed text-center'>{`${genre[0]}${genre.substring(1).toLowerCase()}s which are similar to `}<span className="text-indigo-200 font-medium transition-all">{currentName}:</span></h1>
 						</div>
 					</section>
 					<section className='mx-auto min-h-screen max-w-5xl my-20 flex flex-wrap items-center justify-evenly'>
@@ -274,7 +274,7 @@ const ContentPage:FC = () => {
 									{
 										loggedContext.loading ? <div id="loading" className='flex flex-col justify-center items-center min-h-screen'>
 											<Settings style={{fontSize: "64px", animation: "loading 2s infinite"}}/>
-											<h1 className='text-4xl my-4'>Fetching similar movies...</h1>
+											<h1 className='text-4xl my-4 text-center'>Fetching similar movies...</h1>
 										</div>
 										: <h1>No movies found. Please try again or search for a different movie.</h1>
 									}
@@ -302,7 +302,7 @@ const ContentPage:FC = () => {
 											{
 												loggedContext.loading ? <div id="loading" className='flex flex-col justify-center items-center min-h-screen'>
 													<Settings style={{fontSize: "64px", animation: "loading 2s infinite"}}/>
-													<h1 className='text-4xl my-4'>Fetching similar songs...</h1>
+													<h1 className='text-4xl my-4 text-center'>Fetching similar songs...</h1>
 												</div>
 												: <h1>No songs found. Please try again or search for a different song.</h1>
 											}
@@ -330,7 +330,7 @@ const ContentPage:FC = () => {
 													{
 														loggedContext.loading ? <div id="loading" className='flex flex-col justify-center items-center min-h-screen'>
 															<Settings style={{fontSize: "64px", animation: "loading 2s infinite"}}/>
-															<h1 className='text-4xl my-4'>Fetching similar games...</h1>
+															<h1 className='text-4xl my-4 text-center'>Fetching similar games...</h1>
 														</div>
 														: <h1>No games found. Please try again or search for a different game.</h1>
 													}
@@ -348,7 +348,7 @@ const ContentPage:FC = () => {
 						<img className='cursor-pointer' src="/" alt="RECMEND" onClick={() => navigate("/")}/>
 						<LoginButton/>
 						<div className='max-w-8xl my-24 mx-auto flex items-center justify-center flex-col'>
-							<h1 className='my-4 text-3xl'>NO CONTENT</h1>
+							<h1 className='my-4 text-3xl text-center'>NO CONTENT</h1>
 						</div>
 					</section>
 				</>
