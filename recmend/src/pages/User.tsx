@@ -68,19 +68,17 @@ const User:FC = () => {
 		<>
 			{
 				loggedContext.loggedIn ?
-				<div className='mx-auto max-w-6xl flex flex-col py-14'>
-					<div className='flex items-center'>
-						<ArrowBackIos id="backArrow" style={{fontSize: "40px", cursor: "pointer"}} onClick={() => navigate(`${prevHref}`)}/>
-						<h1 className='text-6xl text-center mx-12'>Welcome, {userData["username"]}</h1>
+				<div className='mx-auto max-w-6xl flex flex-col py-10 sm:py-14'>
+					<div className='flex items-center mx-8'>
+						<ArrowBackIos id="backArrow" style={{fontSize: "40px", cursor: "pointer"}} onClick={() => {window.history.back()}}/>
+						<h1 className='text-4xl text-center mx-4 md:text-6xl sm:mx-12 sm:text-5xl'>Welcome, {userData["username"]}</h1>
 					</div>
-					<hr className='my-12 border-indigo-200'/>
+					<hr className='my-12 mx-4 border-indigo-200'/>
 					<div className=''>
 						<ul className='flex justify-around text-3xl'>
 							<h2 id="savedTab" className='text-indigo-200 transition-all cursor-pointer'>Saved</h2>
 						</ul>
-					</div>
-					<div className='flex max-w-6xl px-12 justify-center'>
-						<ul id="genresList" className='text-xl flex flex-col justify-around my-8 mx-4 transition-all'>
+						<ul id="genresList" className='text-xl flex justify-around my-8 mx-4 transition-all'>
 							<li id='moviesTab' className='hover:text-indigo-200 transition-all cursor-pointer' onClick={() => {setCurrentGenre(fetchedMovies);
 								document.getElementById("moviesTab")?.classList.add("text-indigo-200")
 								document.getElementById("songsTab")?.classList.remove("text-indigo-200")
@@ -100,22 +98,24 @@ const User:FC = () => {
 								setCurrentTab("GAME")
 							}}>Games</li>
 						</ul>
-						<div className='flex flex-wrap min-w-full mx-4 max-h-40 font-normal p-8 border border-indigo-200 rounded-lg my-10 overflow-y-auto' style={{minHeight: "28rem"}}>
+					</div>
+					<div className='flex max-w-6xl px-4 justify-center mx-2 sm:mx-4'>
+						<div className='flex flex-wrap min-w-full mx-4 px-2 sm:px-8 max-h-40 font-normal py-8 border border-indigo-200 rounded-lg my-4 overflow-y-auto' style={{minHeight: "28rem"}}>
 							{
 								currentGenre ? <>
 									{
 										currentGenre.map((item:any, index:any) => {
 											return (
 												<>
-													<div className='flex flex-wrap my-10 items-center justify-center w-1/2' key={index}>
-														<div className='displayImgWrapper mx-4 w-40 relative transition-all' onMouseOver={() => imgHover(index)} onMouseOut={() => imgHover(index)}>
+													<div className='flex flex-col text-center flex-wrap my-10 items-center justify-center mx-auto sm:w-1/2 sm:mx-0' key={index}>
+														<div className='displayImgWrapper mx-8 w-48 relative transition-all' onMouseOver={() => imgHover(index)} onMouseOut={() => imgHover(index)}>
 															<img id="displayImg" src={item.data["M"].image["S"]} alt="songURL" className='displayImg rounded-lg transition-all'/>
 															<Favorite className="favBtn absolute top-2 left-2 hidden transition-all opacity-0 cursor-pointer" style={{fontSize: "32px"}} onClick={() => loggedContext.unsaveDBItem(item, currentTab, userData.userId)}/>
 															<Link state={[currentTab, "", item.data["M"].name["S"], item.data["M"].id["S"], item.data["M"].image["S"]]} to={"/content"}>
 																<Visibility className="visBtn absolute bottom-2 left-2 hidden transition-all opacity-0 cursor-pointer" style={{fontSize: "32px", cursor: "pointer"}} onClick={() => {loggedContext.updateIncorrect(false)}}/>
 															</Link>
 														</div>
-														<div className='mx-4 w-1/4'>
+														<div className='mx-4 w-1/2'>
 															<h1 className='my-4 text-xl'>{item.data["M"].name["S"]}</h1>
 														</div>
 													</div>

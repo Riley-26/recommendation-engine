@@ -2,6 +2,7 @@
   "name": "recmend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@aws-amplify/ui-react": "^6.1.5",
     "@aws-sdk/client-dynamodb": "^3.529.1",
@@ -21,6 +22,8 @@
     "aws-amplify": "^6.0.19",
     "aws-amplify-react": "^5.1.43",
     "aws-sdk": "^2.1574.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
     "postcss": "^8.4.35",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -54,5 +57,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.13"
   }
 }

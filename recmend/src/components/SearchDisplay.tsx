@@ -52,20 +52,20 @@ const SearchDisplay:FC<DisplayProps> = ({display_imgURL, display_name, display_a
 
     return (
         <>
-            <h1 className="text-6xl leading-relaxed">Is this the correct <span id="textAnim" className="text-indigo-200 font-medium transition-all">{genre}</span>?</h1>
-            <div className='flex items-center justify-center my-16'>
-                <div className='mx-8 w-2/4 max-w-xl relative transition-all' onMouseOver={() => imgHover()} onMouseOut={() => imgHover()}>
-                    <img id="displayImg" src={display_imgURL} alt="displayImg" className='rounded-lg transition-all'/>
+            <h1 className="leading-relaxed mx-4 text-3xl lg:text-5xl sm:text-4xl lg:leading-relaxed md:leading-relaxed sm:leading-relaxed text-center">Is this the correct <span id="textAnim" className="text-indigo-200 font-medium transition-all">{genre}</span>?</h1>
+            <div className='flex flex-col items-center justify-center my-16 xl:flex-row'>
+                <div className='mx-8 w-3/4 max-w-2xl relative transition-all sm:w-3/4' onMouseOver={() => imgHover()} onMouseOut={() => imgHover()}>
+                    <img id="displayImg" src={display_imgURL} alt="displayImg" className='rounded-lg transition-all' style={{maxHeight: "40rem"}}/>
                     <Favorite id="favBtn" className="absolute top-5 left-5 hidden transition-all opacity-0 cursor-pointer" style={{fontSize: "48px"}} onClick={() => saveItem()}/>
                 </div>
                 <div className='mx-8 w-2/4 max-w-3xl'>
-                    <h1 className='my-4 text-5xl'>{display_name}</h1>
-                    <h2 className='my-4 text-3xl'>{display_artistName}</h2>
+                    <h1 className='leading-relaxed text-3xl sm:text-4xl lg:leading-relaxed md:leading-relaxed sm:leading-relaxed text-center my-4'>{display_name}</h1>
+                    <h2 className='leading-relaxed text-xl lg:text-3xl sm:text-2xl lg:leading-relaxed md:leading-relaxed sm:leading-relaxed text-center'>{display_artistName}</h2>
                 </div>
             </div>
             <div className='mx-auto w-64 flex justify-between'>
                 <Close style={{fontSize: "4rem", color: "rgb(180, 0, 0)", cursor: "pointer"}} onClick={() => {loggedContext.updateIncorrect(true)}}/>
-                <Link state={[genre, new_data, display_name, item_id]} to={"/content"}><Check style={{fontSize: "4rem", color: "rgb(0, 150, 0)", cursor: "pointer"}} onClick={() => {loggedContext.updateIncorrect(false)}}/></Link>
+                <Link state={[genre, new_data, display_name, item_id, display_imgURL]} to={"/content"}><Check style={{fontSize: "4rem", color: "rgb(0, 150, 0)", cursor: "pointer"}} onClick={() => {loggedContext.updateIncorrect(false)}}/></Link>
             </div>
         </>
     )

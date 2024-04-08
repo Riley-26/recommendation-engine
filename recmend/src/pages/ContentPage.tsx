@@ -1,6 +1,7 @@
-import {FC, useContext, useEffect, useState} from 'react'
+import {FC, useContext, useEffect, useMemo, useState} from 'react'
 import { ThemeContext } from '../App'
 import { useLocation ,useNavigate } from 'react-router-dom'
+import { Favorite, Settings, ArrowBackIos } from '@mui/icons-material'
 import Navbar from '../components/Navbar'
 import LoginButton from '../components/LoginButton'
 import axios from "axios";
@@ -66,12 +67,13 @@ const ContentPage:FC = () => {
 
 	const newMovieData = async () => {
         try{
+			loggedContext.updateLoading(true)
 			const movieFetch = await axios.get(`https://api.themoviedb.org/3/movie/${ id }`, {
 				headers: {
 					Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2M4OGNhZjAwNjQ3NjI2YTMwMmQ4YjJlNjA2NDEzYiIsInN1YiI6IjY2MGM4YmU3MzNhMzc2MDE3ZDgxMzI0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OrB-1q5cIi57YByXS-u3savP3yUE2EcL5v8CKFrXOHQ`
 				}
 
-			}).then(async (data) => {
+			}).then(async () => {
 				const movieRecommendations = await axios.get(`https://api.themoviedb.org/3/movie/${ id }/recommendations`, {
 					headers: {
 						Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2M4OGNhZjAwNjQ3NjI2YTMwMmQ4YjJlNjA2NDEzYiIsInN1YiI6IjY2MGM4YmU3MzNhMzc2MDE3ZDgxMzI0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OrB-1q5cIi57YByXS-u3savP3yUE2EcL5v8CKFrXOHQ`
@@ -108,6 +110,7 @@ const ContentPage:FC = () => {
 		};
 		
 		try {
+			loggedContext.updateLoading(true)
 			const response = await axios.post(
 				'https://accounts.spotify.com/api/token',
 				qs.stringify(clientData),
@@ -144,15 +147,36 @@ const ContentPage:FC = () => {
 	}
 
 	const newGameData = async () => {
-		const gameFetch = await fetch(`https://api.rawg.io/api/games?key=cf44002358b0402eb16af2dbdf380343&search=${ name }&search_precise=True`)
-		const gameInfo = await gameFetch.json()
+		try{
+			loggedContext.updateLoading(true)
+			const gameFetch = await axios.get(`http://localhost:5000/api/data?query=${ name }&type=search`).then((data:any) => {
+				return data
+			})
 
-		const gameGenres = gameInfo.results[0].genres
-
-		//const recommendGames = await axios.get(`https://api.rawg.io/api/games?key=cf44002358b0402eb16af2dbdf380343&genres=${"fighting"}&page_size=100&page=6`)
-
-		return gameInfo
+			return gameFetch
+		} catch (error){
+			console.log(error)
+		}
 	}
+
+	const imgHover = (index:any) => {
+        const favBtn:any = document.getElementsByClassName("favBtn")[index];
+        const displayImg:any = document.getElementsByClassName("displayImg")[index];
+        
+        favBtn.classList.toggle("hidden");
+        favBtn.classList.toggle("opacity-100");
+        displayImg.classList.toggle("brightness-50");
+    }
+
+	const saveItem = (item_name:any, item_img:any, item_id:any) => {
+        if (loggedContext.loggedIn){
+            const userId = loggedContext.userData.userId;
+            loggedContext.saveObjToDB(userId, [item_name, item_img, ""], genre, String(item_id))
+        } else {
+            const userId = "undefined";
+            alert("Please log in to use this feature.")
+        }
+    }
 
 	useEffect(() => {
 		sessionStorage.setItem("prevHref", window.location.pathname)
@@ -162,13 +186,12 @@ const ContentPage:FC = () => {
 	useEffect(() => {
 		if (dataSet){
 			if (id && currentGenre === "MOVIE"){
-				const movieGenreArray:number[] = []
 				newMovieData().then((data:any) => {
-					console.log(data)
-					setMovieDetails(data)
+					setMovieDetails(data.data)
 					setFetched(true)
 				}).then(() => {
 					setFetched(false)
+					loggedContext.updateLoading(false)
 				})
 			} else if (currentGenre === "SONG"){
 				newSongData().then((data:any) => {
@@ -176,22 +199,29 @@ const ContentPage:FC = () => {
 					setFetched(true)
 				}).then(() => {
 					setFetched(false)
+					loggedContext.updateLoading(false)
 				})
 			} else if (currentGenre === "GAME"){
-				const gameGenreArray:number[] = [];
-				newGameData().then((data:any) => {
-					for (let i=0; i<data.results[0].genres.length; i++){
-						gameGenreArray.push(data.results[0].genres[i].name)
+				newGameData().then(async (data:any) => {
+					const gameRecommendations:any[] = [];
+					if (!data){
+						setGameDetails(undefined)
+						return ""
 					}
-					const gameGenreObj:any = {};
-					gameGenreObj[name] = gameGenreArray
-					setGameDetails(gameGenreObj)
+					for (let i=0; i<data.data.length; i++){
+						const similarGameFetch = await axios.get(`https://api.rawg.io/api/games?key=cf44002358b0402eb16af2dbdf380343&search=${ data.data[i].name }&search_precise=true`).then((data:any) => {
+							gameRecommendations.push(data.data.results[0])
+						})
+					}
+					setGameDetails(gameRecommendations)
 					setFetched(true)
 				}).then(() => {
 					setFetched(false)
+					loggedContext.updateLoading(false)
 				})
 			}
 		}
+
 
     }, [dataSet])
 
@@ -210,32 +240,44 @@ const ContentPage:FC = () => {
 			{
 				stateData ? <>
 					<section className='mx-auto min-h-screen max-w-4xl flex flex-col items-center justify-center'>
-						<img className='cursor-pointer my-12' src="/" alt="RECMEND" onClick={() => navigate("/")}/>
+						<div className='flex justify-between items-center w-2/4'>
+							<span className='cursor-pointer text-xl' id='backArrow' onClick={() => {window.history.back()}}><ArrowBackIos id="backArrow" style={{fontSize: "32px", cursor: "pointer"}}/>Back</span>
+							<img className='cursor-pointer my-8' src="/" alt="RECMEND" onClick={() => navigate("/")}/>
+						</div>
 						<LoginButton/>
-						<div className='max-w-8xl my-24 mx-auto flex items-center justify-center flex-col'>
-							<img src={displayImg} alt="imgURL" className='rounded-lg my-8'/>
-							<h1 className='text-4xl'>{`${genre[0]}${genre.substring(1).toLowerCase()}s which are similar to `}<span className="text-indigo-200 font-medium transition-all">{currentName}:</span></h1>
+						<div className='max-w-8xl my-8 mx-auto flex items-center justify-center flex-col'>
+							<img src={displayImg} alt="imgURL" className='rounded-lg my-8' style={{maxHeight: "40rem"}}/>
+							<h1 className='text-4xl text-center'>{`${genre[0]}${genre.substring(1).toLowerCase()}s which are similar to `}<span className="text-indigo-200 font-medium transition-all">{currentName}:</span></h1>
 						</div>
 					</section>
-					<section className='mx-auto min-h-screen max-w-5xl flex flex-wrap items-center justify-evenly'>
+					<section className='mx-auto min-h-screen max-w-5xl my-20 flex flex-wrap items-center justify-evenly'>
 						{
-							currentGenre === "MOVIE" ? 
+							currentGenre === "MOVIE" ?
 								movieDetails ? <>
 									{
-										movieDetails.data.results.map((item:any, index:any) => {
-											console.log(item)
+										movieDetails.results.map((item:any, index:any) => {
 											let movieName = item.title;
 											if (item.title.length > 60){
 												movieName += "..."
 											}
+											console.log(item)
 											return <div className='flex flex-col items-center max-w-1/2 mx-8 my-14 w-60 h-80 justify-end'>
-												<h1 className='text-lg text-center'>{movieName}</h1>
-												<img className='flex flex-col' src={`https://image.tmdb.org/t/p/original${ item.poster_path }`} alt="movieImg" />
+												<h1 className='text-lg text-center my-2'>{movieName}</h1>
+												<div className='relative' onMouseOver={() => imgHover(index)} onMouseOut={() => imgHover(index)}>
+													<img className='displayImg flex flex-col rounded-lg transition-all' src={`https://image.tmdb.org/t/p/original${ item.poster_path }`} alt="movieImg" />
+													<Favorite className="favBtn absolute top-5 left-5 hidden transition-all opacity-0 cursor-pointer" style={{fontSize: "48px"}} onClick={() => saveItem(item.title, `https://image.tmdb.org/t/p/original${ item.poster_path }`, item.id)}/>
+												</div>
 											</div>
 										})
 									}
 								</> : <>
-									<h1>No movies found</h1>
+									{
+										loggedContext.loading ? <div id="loading" className='flex flex-col justify-center items-center min-h-screen'>
+											<Settings style={{fontSize: "64px", animation: "loading 2s infinite"}}/>
+											<h1 className='text-4xl my-4'>Fetching similar movies...</h1>
+										</div>
+										: <h1>No movies found. Please try again or search for a different movie.</h1>
+									}
 								</>
 							: <>
 								{
@@ -243,22 +285,59 @@ const ContentPage:FC = () => {
 										songDetails ? <>
 											{
 												songDetails.map((item:any, index:any) => {
-													console.log(item)
 													let songName = item.name;
 													if (item.name.length > 60){
 														songName += "..."
 													}
 													return <div className='flex flex-col items-center max-w-1/2 mx-8 my-14 w-60 h-80 justify-end'>
-														<h1 className='text-lg text-center'>{songName}</h1>
-														<img className='flex flex-col' src={item.album.images[0].url} alt="movieImg" />
+														<h1 className='text-lg text-center my-2'>{songName}</h1>
+														<div className='relative' onMouseOver={() => imgHover(index)} onMouseOut={() => imgHover(index)}>
+															<img className='displayImg flex flex-col rounded-lg transition-all' src={item.album.images[0].url} alt="songImg" />
+															<Favorite className="favBtn absolute top-5 left-5 hidden transition-all opacity-0 cursor-pointer" style={{fontSize: "48px"}} onClick={() => saveItem(item.name, item.album.images[0].url, item.id)}/>
+														</div>
 													</div>
 												})
 											}
 										</> : <>
-											<h1>No songs found</h1>
+											{
+												loggedContext.loading ? <div id="loading" className='flex flex-col justify-center items-center min-h-screen'>
+													<Settings style={{fontSize: "64px", animation: "loading 2s infinite"}}/>
+													<h1 className='text-4xl my-4'>Fetching similar songs...</h1>
+												</div>
+												: <h1>No songs found. Please try again or search for a different song.</h1>
+											}
 										</>
 									: <>
-										
+										{
+											currentGenre === "GAME" ?
+												gameDetails ? <>
+													{
+														gameDetails.map((item:any, index:any) => {
+															let gameName = item.name
+															if (item.name.length > 60){
+																gameName += "..."
+															}
+															return <div className='flex flex-col items-center max-w-1/2 mx-8 my-14 w-60 h-80 justify-end'>
+																<h1 className='text-lg text-center my-2'>{gameName}</h1>
+																<div className='relative' onMouseOver={() => imgHover(index)} onMouseOut={() => imgHover(index)}>
+																	<img className='displayImg flex flex-col rounded-lg transition-all' src={item.background_image} alt="gameImg" />
+																	<Favorite className="favBtn absolute top-5 left-5 hidden transition-all opacity-0 cursor-pointer" style={{fontSize: "48px"}} onClick={() => saveItem(item.name, item.background_image, item.id)}/>
+																</div>
+															</div>
+														})
+													}
+												</> : <>
+													{
+														loggedContext.loading ? <div id="loading" className='flex flex-col justify-center items-center min-h-screen'>
+															<Settings style={{fontSize: "64px", animation: "loading 2s infinite"}}/>
+															<h1 className='text-4xl my-4'>Fetching similar games...</h1>
+														</div>
+														: <h1>No games found. Please try again or search for a different game.</h1>
+													}
+												</> : <>
+													<h1>None found. Please try again.</h1>
+												</>
+										}
 									</>
 								}
 							</>
