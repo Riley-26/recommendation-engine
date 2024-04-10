@@ -2,7 +2,6 @@
   "name": "recmend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://recmend-server.eu-west-2.elasticbeanstalk.com/",
   "dependencies": {
     "@aws-amplify/ui-react": "^6.1.5",
     "@aws-sdk/client-dynamodb": "^3.529.1",

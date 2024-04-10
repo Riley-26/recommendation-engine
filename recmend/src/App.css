@@ -35,6 +35,16 @@ input:focus-within{
 	font-size: 88px;
 }
 
+#contentLogo{
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	font-size: 48px;
+}
+
+#loginLogo{
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	font-size: 48px;
+}
+
 @media (max-width: 600px){
 	#homeLogo{
 		font-size: 64px;

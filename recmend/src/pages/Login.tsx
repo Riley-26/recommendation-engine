@@ -107,7 +107,7 @@ const Login:FC = () => {
 
 	return (
 		<div className='flex flex-col items-center justify-center max-w-6xl mx-auto min-h-screen'>
-			<img className='cursor-pointer' src="/" alt="RECMEND" onClick={() => navigate("/")}/>
+			<span id="loginLogo" className='cursor-pointer'>REC<span className="text-indigo-200" onClick={() => navigate("/")}>MEND</span></span>
 			<form id="form" className='flex flex-col w-4/5 border-2 border-indigo-200 rounded-lg my-6 p-4 sm:p-20'>
 				<div className='flex flex-col my-6'>
 					<label className='text-lg my-2'>Username*</label>

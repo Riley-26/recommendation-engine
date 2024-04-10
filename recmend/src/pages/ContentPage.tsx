@@ -149,7 +149,7 @@ const ContentPage:FC = () => {
 	const newGameData = async () => {
 		try{
 			loggedContext.updateLoading(true)
-			const gameFetch = await axios.get(`http://192.168.1.73:5000/api/data?query=${ name }&type=search`).then((data:any) => {
+			const gameFetch = await axios.get(`http://recmend-server.eu-west-2.elasticbeanstalk.com/api/data?query=${ name }&type=search`).then((data:any) => {
 				return data
 			})
 
@@ -242,7 +242,7 @@ const ContentPage:FC = () => {
 					<section className='mx-auto min-h-screen max-w-4xl flex flex-col items-center justify-center'>
 						<div className='flex justify-between items-center w-3/4 sm:w-2/4'>
 							<span className='cursor-pointer text-xl' id='backArrow' onClick={() => {window.history.back()}}><ArrowBackIos id="backArrow" style={{fontSize: "32px", cursor: "pointer"}}/>Back</span>
-							<img className='cursor-pointer my-8' src="/" alt="RECMEND" onClick={() => navigate("/")}/>
+							<span id="contentLogo" className='cursor-pointer'>REC<span className="text-indigo-200" onClick={() => navigate("/")}>MEND</span></span>
 						</div>
 						<LoginButton/>
 						<div className='max-w-8xl my-8 mx-auto flex items-center justify-center flex-col'>
