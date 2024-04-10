@@ -1,64 +1,15 @@
 {
-  "name": "recmend",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@aws-amplify/ui-react": "^6.1.5",
-    "@aws-sdk/client-dynamodb": "^3.529.1",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.12",
-    "@mui/material": "^5.15.12",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.87",
-    "@types/react": "^18.2.64",
-    "@types/react-dom": "^18.2.21",
-    "@types/react-router-dom": "^5.3.3",
-    "autoprefixer": "^10.4.18",
-    "aws-amplify": "^6.0.19",
-    "aws-amplify-react": "^5.1.43",
-    "aws-sdk": "^2.1574.0",
-    "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "postcss": "^8.4.35",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.3",
-    "react-scripts": "5.0.1",
-    "spotify-web-api-js": "^1.5.2",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
-  },
+  "name": "recmend-server",
+  "version": "1.0.0",
+  "description": "",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.13"
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
   }
 }

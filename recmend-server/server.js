@@ -2,17 +2,20 @@ const express = require('express');
 const axios = require("axios")
 const app = express();
 const cors = require("cors")
-const PORT = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(express())
 app.use(cors({
     origin: "https://recmend.web.app/",
     methods: "GET, POST",
-    allowedHeaders: "Content-Type, Authorization"
 }))
 
 let prevData = "";
 let prevQuery = "";
+
+app.get("/", (req, res) => {
+    res.send("Home")
+})
 
 app.get('/api/data', async (req, res) => {
     const query = req.query.query
@@ -40,6 +43,6 @@ app.get('/api/data', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
