@@ -1,4 +1,4 @@
-const express = require('express');
+nconst express = require('express');
 const axios = require("axios")
 const app = express();
 const cors = require("cors")
@@ -20,8 +20,8 @@ app.get('/api/data', async (req, res) => {
     try{
         if (searchType === "search"){
             if (query !== prevQuery){
-                const response = await axios.get(`https://www.giantbomb.com/api/search/?api_key=f48b4d0ac779a1ed9f10173ef0a2942aa15fb2c0&format=json&query=${ query }&resources=game`).then(async (data) => {
-                    const similarGames = await axios.get(`https://www.giantbomb.com/api/game/${ data.data.results[0].guid }/?api_key=f48b4d0ac779a1ed9f10173ef0a2942aa15fb2c0&format=json`).then((data) => {
+                const response = await axios.get(`https://www.giantbomb.com/api/search/?api_key=hidden&format=json&query=${ query }&resources=game`).then(async (data) => {
+                    const similarGames = await axios.get(`https://www.giantbomb.com/api/game/${ data.data.results[0].guid }/?api_key=hidden&format=json`).then((data) => {
                         prevData = data.data.results.similar_games
                         prevQuery = query
                         return data.data.results.similar_games
