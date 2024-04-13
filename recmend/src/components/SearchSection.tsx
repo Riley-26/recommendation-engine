@@ -1,4 +1,4 @@
-nimport {FC, useContext, useEffect, useState} from 'react';
+import {FC, useContext, useEffect, useState} from 'react';
 import {ThemeContext} from "../App";
 import axios from "axios";
 import qs from 'qs';
