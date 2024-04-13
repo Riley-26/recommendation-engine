@@ -70,13 +70,13 @@ const ContentPage:FC = () => {
 			loggedContext.updateLoading(true)
 			const movieFetch = await axios.get(`https://api.themoviedb.org/3/movie/${ id }`, {
 				headers: {
-					Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2M4OGNhZjAwNjQ3NjI2YTMwMmQ4YjJlNjA2NDEzYiIsInN1YiI6IjY2MGM4YmU3MzNhMzc2MDE3ZDgxMzI0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OrB-1q5cIi57YByXS-u3savP3yUE2EcL5v8CKFrXOHQ`
+					Authorization: `Bearer hidden`
 				}
 
 			}).then(async () => {
 				const movieRecommendations = await axios.get(`https://api.themoviedb.org/3/movie/${ id }/recommendations`, {
 					headers: {
-						Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2M4OGNhZjAwNjQ3NjI2YTMwMmQ4YjJlNjA2NDEzYiIsInN1YiI6IjY2MGM4YmU3MzNhMzc2MDE3ZDgxMzI0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OrB-1q5cIi57YByXS-u3savP3yUE2EcL5v8CKFrXOHQ`
+						Authorization: `Bearer hidden`
 					}
 				})
 				return movieRecommendations
@@ -92,8 +92,8 @@ const ContentPage:FC = () => {
 	const newSongData = async () => {
 		let spotifyToken = "";
 
-		const client_id = "85baaa6f21eb44f184cadb4433f207cc";
-		const client_secret = "656b44490ac346d79f08fc1e51cdc0a1";
+		const client_id = "hidden";
+		const client_secret = "hidden";
 	
 		const headers = {
 			headers: {
@@ -149,7 +149,7 @@ const ContentPage:FC = () => {
 	const newGameData = async () => {
 		try{
 			loggedContext.updateLoading(true)
-			const gameFetch = await axios.get(`http://recmend-server.eu-west-2.elasticbeanstalk.com/api/data?query=${ name }&type=search`).then((data:any) => {
+			const gameFetch = await axios.get(`http://recmendserver-823600abdfae.herokuapp.com/api/data?query=${ name }&type=search`).then((data:any) => {
 				return data
 			})
 
@@ -209,7 +209,7 @@ const ContentPage:FC = () => {
 						return ""
 					}
 					for (let i=0; i<data.data.length; i++){
-						const similarGameFetch = await axios.get(`https://api.rawg.io/api/games?key=cf44002358b0402eb16af2dbdf380343&search=${ data.data[i].name }&search_precise=true`).then((data:any) => {
+						const similarGameFetch = await axios.get(`https://api.rawg.io/api/games?key=hidden&search=${ data.data[i].name }&search_precise=true`).then((data:any) => {
 							gameRecommendations.push(data.data.results[0])
 						})
 					}
