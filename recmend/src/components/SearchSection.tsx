@@ -1,4 +1,4 @@
-import {FC, useContext, useEffect, useState} from 'react';
+nimport {FC, useContext, useEffect, useState} from 'react';
 import {ThemeContext} from "../App";
 import axios from "axios";
 import qs from 'qs';
@@ -13,8 +13,8 @@ const SearchSection:FC<SearchProps> = ({genre}) => {
     let spotifyToken = "";
 
     const getToken = async () => {
-        const client_id = "85baaa6f21eb44f184cadb4433f207cc";
-        const client_secret = "656b44490ac346d79f08fc1e51cdc0a1";
+        const client_id = "hidden";
+        const client_secret = "hidden";
     
         const headers = {
             headers: {
@@ -47,7 +47,7 @@ const SearchSection:FC<SearchProps> = ({genre}) => {
         try{
             const {data} = await axios.get(`https://api.themoviedb.org/3/authentication`, {
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2M4OGNhZjAwNjQ3NjI2YTMwMmQ4YjJlNjA2NDEzYiIsInN1YiI6IjY2MGM4YmU3MzNhMzc2MDE3ZDgxMzI0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OrB-1q5cIi57YByXS-u3savP3yUE2EcL5v8CKFrXOHQ`
+                    Authorization: `Bearer hidden`
                 }
             })
             return data
