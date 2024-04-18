@@ -70,7 +70,7 @@ const SearchSection:FC<SearchProps> = ({genre}) => {
             try{
                 const {data} = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${ input }&include_adult=false`, {
                     headers: {
-                        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2M4OGNhZjAwNjQ3NjI2YTMwMmQ4YjJlNjA2NDEzYiIsInN1YiI6IjY2MGM4YmU3MzNhMzc2MDE3ZDgxMzI0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.OrB-1q5cIi57YByXS-u3savP3yUE2EcL5v8CKFrXOHQ`
+                        Authorization: `Bearer hidden`
                     }
                 });
 
@@ -103,7 +103,7 @@ const SearchSection:FC<SearchProps> = ({genre}) => {
         
         const gameData = async () => {
             try{
-                const gameImageFetch = await axios.get(`https://api.rawg.io/api/games?key=cf44002358b0402eb16af2dbdf380343&search=${ input }`).then((newData:any) => {
+                const gameImageFetch = await axios.get(`https://api.rawg.io/api/games?key=hidden&search=${ input }`).then((newData:any) => {
                     return newData.data
                 })
 
